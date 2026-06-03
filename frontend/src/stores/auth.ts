@@ -6,9 +6,17 @@ interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (provider: string, code: string) => Promise<void>;
+  oauthLogin: (provider: string, code: string) => Promise<void>;
+  passwordLogin: (email: string, password: string) => Promise<void>;
+  register: (username: string, email: string, password: string) => Promise<void>;
   logout: () => void;
   fetchMe: () => Promise<void>;
+}
+
+function saveAndFetch(set: any, data: { access_token: string; refresh_token: string }) {
+  localStorage.setItem("access_token", data.access_token);
+  localStorage.setItem("refresh_token", data.refresh_token);
+  useAuthStore.getState().fetchMe();
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -16,14 +24,28 @@ export const useAuthStore = create<AuthState>((set) => ({
   isAuthenticated: false,
   isLoading: true,
 
-  login: async (provider: string, code: string) => {
-    const { access_token, refresh_token } = await api.post<{
-      access_token: string;
-      refresh_token: string;
-    }>("/auth/login", { provider, code });
-    localStorage.setItem("access_token", access_token);
-    localStorage.setItem("refresh_token", refresh_token);
-    await useAuthStore.getState().fetchMe();
+  oauthLogin: async (provider: string, code: string) => {
+    const data = await api.post<{ access_token: string; refresh_token: string }>(
+      "/auth/login",
+      { provider, code }
+    );
+    saveAndFetch(set, data);
+  },
+
+  passwordLogin: async (email: string, password: string) => {
+    const data = await api.post<{ access_token: string; refresh_token: string }>(
+      "/auth/password-login",
+      { email, password }
+    );
+    saveAndFetch(set, data);
+  },
+
+  register: async (username: string, email: string, password: string) => {
+    const data = await api.post<{ access_token: string; refresh_token: string }>(
+      "/auth/register",
+      { username, email, password }
+    );
+    saveAndFetch(set, data);
   },
 
   logout: () => {
