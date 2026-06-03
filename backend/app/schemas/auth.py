@@ -1,4 +1,16 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
+
+
+class RegisterRequest(BaseModel):
+    username: str
+    email: EmailStr
+    password: str
+    display_name: str | None = None
+
+
+class PasswordLoginRequest(BaseModel):
+    email: EmailStr
+    password: str
 
 
 class OAuthLoginRequest(BaseModel):
@@ -22,8 +34,19 @@ class UserResponse(BaseModel):
     username: str
     display_name: str
     avatar_url: str
+    email: str | None = None
 
     model_config = {"from_attributes": True}
+
+    @classmethod
+    def from_orm_user(cls, user) -> "UserResponse":
+        return cls(
+            id=str(user.id),
+            username=user.username,
+            display_name=user.display_name,
+            avatar_url=user.avatar_url,
+            email=user.email,
+        )
 
 
 class OAuthProviderInfo(BaseModel):
