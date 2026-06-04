@@ -118,9 +118,9 @@ export default function PostDetailPage() {
 
         <Separator className="mb-6" />
 
-        {post.images.length > 0 && (
+        {(post.images.length > 0 || post.cover_image) && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8">
-            {post.images.map((img) => (
+            {post.images.length > 0 ? post.images.map((img) => (
               <div key={img.id} className="overflow-hidden rounded-2xl cursor-pointer group/img bg-muted">
                 <img
                   src={img.url_600}
@@ -132,7 +132,17 @@ export default function PostDetailPage() {
                   onClick={() => window.open(img.url_original, "_blank")}
                 />
               </div>
-            ))}
+            )) : (
+              <div className="overflow-hidden rounded-2xl bg-muted col-span-full">
+                <img
+                  src={post.cover_image}
+                  alt={post.title}
+                  className="w-full max-h-96 object-cover transition-all duration-700"
+                  style={{ filter: "blur(10px)" }}
+                  onLoad={(e) => { (e.target as HTMLImageElement).style.filter = "blur(0)"; }}
+                />
+              </div>
+            )}
           </div>
         )}
 
