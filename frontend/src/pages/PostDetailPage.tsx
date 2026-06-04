@@ -63,7 +63,7 @@ export default function PostDetailPage() {
           </Badge>
           <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-3 text-foreground">{post.title}</h1>
 
-          {post.category === "dev-env" && <OsDetector />}
+          {post.category === "dev-env" && <OsDetector tags={post.tags} />}
           <p className="text-muted-foreground mb-4 text-sm leading-relaxed">{post.description}</p>
 
           <div className="flex items-center gap-3 mb-4">

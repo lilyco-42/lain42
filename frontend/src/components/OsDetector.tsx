@@ -27,7 +27,46 @@ function detect(): { os: OS; arch: string } {
   return { os, arch };
 }
 
-export default function OsDetector() {
+// Map tags → relevant tools to show
+const TAG_TOOLS: Record<string, string[]> = {
+  c: ["LLVM/Clang", "GCC", "CMake", "Git", "vcpkg"],
+  cpp: ["LLVM/Clang", "GCC", "CMake", "Git", "vcpkg"],
+  llvm: ["LLVM/Clang", "CMake", "Git"],
+  clang: ["LLVM/Clang", "CMake"],
+  gcc: ["GCC", "CMake", "Git"],
+  cmake: ["CMake", "LLVM/Clang", "GCC"],
+  python: ["Python", "uv", "Git"],
+  pip: ["Python", "uv"],
+  rust: ["Rust", "LLVM/Clang", "Git"],
+  cargo: ["Rust", "Git"],
+  go: ["Go", "Git"],
+  golang: ["Go", "Git"],
+  nodejs: ["NodeJS", "bun", "Git"],
+  typescript: ["NodeJS", "bun", "Git"],
+  npm: ["NodeJS", "bun"],
+  javascript: ["NodeJS", "bun", "Git"],
+  java: ["JDK", "Git"],
+  kotlin: ["JDK", "Git"],
+  zig: ["Zig", "LLVM/Clang", "Git"],
+  ruby: ["Git"],
+  lua: ["Git"],
+  php: ["Git"],
+  compression: ["7-Zip"],
+  ffmpeg: ["FFmpeg"],
+  video: ["FFmpeg"],
+  imagemagick: ["ImageMagick"],
+  archive: ["7-Zip"],
+  benchmark: ["oha"],
+  terminal: ["atac", "Git"],
+  ai: ["Claude Code", "Codex"],
+  claude: ["Claude Code"],
+  codex: ["Codex"],
+  shell: ["atac", "Git"],
+  nushell: ["Git"],
+  drawing: ["ImageMagick"],
+};
+
+export default function OsDetector({ tags = [] }: { tags?: string[] }) {
   const [os, setOs] = useState<ReturnType<typeof detect> | null>(null);
   const [tools, setTools] = useState<Record<string, ToolData>>({});
   const [loading, setLoading] = useState(true);
@@ -51,9 +90,21 @@ export default function OsDetector() {
   const Icon = ICON[os.os];
   const names: Record<string, string> = { windows: "Windows", macos: "macOS", linux: "Linux", unknown: "未知" };
 
-  // Filter tools that have downloads for this OS + arch
-  const available = Object.entries(tools).filter(([_, t]) =>
-    t.variants.some(v => v.os === os.os && v.arch === os.arch)
+  // Determine relevant tools based on tags
+  const relevant = new Set<string>();
+  if (tags.length > 0) {
+    for (const tag of tags) {
+      const mapped = TAG_TOOLS[tag.toLowerCase()];
+      if (mapped) mapped.forEach(t => relevant.add(t));
+    }
+  }
+  // If no tags matched, show all
+  const toolFilter = relevant.size > 0 ? relevant : null;
+
+  // Filter tools that have downloads for this OS + arch AND are relevant
+  const available = Object.entries(tools).filter(([name, t]) =>
+    t.variants.some(v => v.os === os.os && v.arch === os.arch) &&
+    (!toolFilter || toolFilter.has(name))
   );
 
   return (
