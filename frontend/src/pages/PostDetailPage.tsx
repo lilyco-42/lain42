@@ -54,36 +54,39 @@ export default function PostDetailPage() {
     <Layout>
       <div className="max-w-4xl mx-auto px-4 py-6">
         <div className="mb-6">
-          <Badge variant="outline" className="mb-2">
+          <Badge className="mb-3 rounded-full px-3 py-0.5 bg-primary/10 text-primary border-0 text-xs font-medium">
             {CATEGORIES[post.category] || post.category}
           </Badge>
-          <h1 className="text-3xl font-bold mb-2">{post.title}</h1>
-          <p className="text-muted-foreground mb-4">{post.description}</p>
+          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-3 text-foreground">{post.title}</h1>
+          <p className="text-muted-foreground mb-4 text-sm leading-relaxed">{post.description}</p>
 
-          <div className="flex items-center gap-3">
-            <Link to={`/user/${post.author.username}`} className="flex items-center gap-2">
-              <Avatar className="h-8 w-8">
+          <div className="flex items-center gap-3 mb-4">
+            <Link to={`/user/${post.author.username}`} className="flex items-center gap-2.5 group">
+              <Avatar className="h-9 w-9 ring-2 ring-border group-hover:ring-primary/30 transition-all">
                 <AvatarImage src={post.author.avatar_url} />
-                <AvatarFallback>{post.author.display_name[0]}</AvatarFallback>
+                <AvatarFallback className="bg-accent text-accent-foreground text-xs">{post.author.display_name[0]}</AvatarFallback>
               </Avatar>
-              <span className="text-sm font-medium">{post.author.display_name}</span>
+              <div>
+                <span className="text-sm font-semibold group-hover:text-primary transition-colors">{post.author.display_name}</span>
+                <p className="text-xs text-muted-foreground">
+                  {new Date(post.created_at).toLocaleDateString("zh-CN", { year: "numeric", month: "long", day: "numeric" })}
+                </p>
+              </div>
             </Link>
-            <span className="text-sm text-muted-foreground">
-              {new Date(post.created_at).toLocaleDateString("zh-CN")}
-            </span>
           </div>
 
-          <div className="flex gap-2 mt-3">
+          <div className="flex gap-2 mt-2">
             <Button
-              variant={liked ? "default" : "outline"}
+              variant={liked ? "default" : "secondary"}
               size="sm"
               onClick={handleLike}
+              className="rounded-full font-medium"
             >
-              <Heart className={`h-4 w-4 mr-1 ${liked ? "fill-current" : ""}`} />
+              <Heart className={`h-4 w-4 mr-1.5 ${liked ? "fill-current" : ""}`} />
               {likesCount}
             </Button>
-            <Button variant="outline" size="sm">
-              <Bookmark className="h-4 w-4 mr-1" />
+            <Button variant="secondary" size="sm" className="rounded-full font-medium">
+              <Bookmark className="h-4 w-4 mr-1.5" />
               收藏
             </Button>
           </div>
@@ -92,41 +95,46 @@ export default function PostDetailPage() {
         <Separator className="mb-6" />
 
         {post.images.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8">
             {post.images.map((img) => (
-              <img
-                key={img.id}
-                src={img.url_600}
-                alt=""
-                className="rounded-lg object-cover w-full cursor-pointer hover:opacity-90"
-                onClick={() => window.open(img.url_original, "_blank")}
-              />
+              <div key={img.id} className="overflow-hidden rounded-2xl cursor-pointer group/img">
+                <img
+                  src={img.url_600}
+                  alt=""
+                  className="w-full h-64 object-cover transition-transform duration-500 group-hover/img:scale-105"
+                  onClick={() => window.open(img.url_original, "_blank")}
+                />
+              </div>
             ))}
           </div>
         )}
 
         {post.config_files.length > 0 && (
           <div className="mb-8">
-            <h2 className="text-xl font-semibold mb-3">配置文件</h2>
+            <h2 className="text-lg font-bold mb-3 flex items-center gap-2">
+              <span className="w-1 h-5 bg-primary rounded-full" />
+              配置文件
+            </h2>
             <div className="space-y-3">
               {post.config_files.map((file, idx) => (
-                <Card key={idx}>
+                <Card key={idx} className="rounded-xl overflow-hidden border-border/50 shadow-none">
                   <CardContent className="p-0">
-                    <div className="flex items-center justify-between px-4 py-2 bg-muted rounded-t-lg">
-                      <code className="text-sm">{file.path}</code>
+                    <div className="flex items-center justify-between px-4 py-2.5 bg-secondary/50">
+                      <code className="text-xs font-mono text-foreground/80">{file.path}</code>
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => copyContent(file.content, file.path)}
+                        className="h-7 rounded-lg text-xs"
                       >
                         {copiedFile === file.path ? (
-                          <Check className="h-4 w-4 text-green-500" />
+                          <Check className="h-3.5 w-3.5 text-green-500" />
                         ) : (
-                          <Copy className="h-4 w-4" />
+                          <Copy className="h-3.5 w-3.5" />
                         )}
                       </Button>
                     </div>
-                    <pre className="p-4 overflow-x-auto text-sm">
+                    <pre className="p-4 overflow-x-auto text-xs leading-relaxed bg-card">
                       <code>{file.content}</code>
                     </pre>
                   </CardContent>
@@ -149,12 +157,14 @@ export default function PostDetailPage() {
         <Separator className="mb-8" />
 
         {post.content && (
-          <div className="prose prose-neutral dark:prose-invert max-w-none">
+          <div className="prose prose-neutral dark:prose-invert max-w-none prose-headings:font-bold prose-a:text-primary prose-img:rounded-2xl">
             <ReactMarkdown rehypePlugins={[rehypeHighlight]} remarkPlugins={[remarkGfm]}>
               {post.content}
             </ReactMarkdown>
           </div>
         )}
+
+        <div className="h-16" />
       </div>
     </Layout>
   );
