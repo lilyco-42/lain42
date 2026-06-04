@@ -15,6 +15,7 @@ import remarkGfm from "remark-gfm";
 import { useAuthStore } from "@/stores/auth";
 import type { PostDetail } from "@/types";
 import { CATEGORIES } from "@/types";
+import OsDetector from "@/components/OsDetector";
 
 export default function PostDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -61,6 +62,8 @@ export default function PostDetailPage() {
             {CATEGORIES[post.category] || post.category}
           </Badge>
           <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-3 text-foreground">{post.title}</h1>
+
+          {post.category === "dev-env" && <OsDetector />}
           <p className="text-muted-foreground mb-4 text-sm leading-relaxed">{post.description}</p>
 
           <div className="flex items-center gap-3 mb-4">
