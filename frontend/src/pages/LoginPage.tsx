@@ -79,20 +79,20 @@ export default function LoginPage() {
 
             {/* Password Login */}
             <TabsContent value="password" className="mt-0">
-              <form onSubmit={handleLogin} className="space-y-4">
-                <div className="space-y-1">
+              <form onSubmit={handleLogin}>
+                <div className="mb-3">
                   <Input type="email" value={loginEmail}
                     onChange={(e) => setLoginEmail(e.target.value)} required
                     className="h-11 rounded-xl bg-secondary/50 border-border/30 text-sm" />
-                  <p className="text-[11px] text-muted-foreground/60 pl-1">邮箱地址</p>
+                  <p className="text-[11px] text-muted-foreground/60 mt-1 pl-1">邮箱地址</p>
                 </div>
-                <div className="space-y-1">
+                <div className="mb-4">
                   <Input type="password" value={loginPassword}
                     onChange={(e) => setLoginPassword(e.target.value)} required
                     className="h-11 rounded-xl bg-secondary/50 border-border/30 text-sm" />
-                  <p className="text-[11px] text-muted-foreground/60 pl-1">密码</p>
+                  <p className="text-[11px] text-muted-foreground/60 mt-1 pl-1">密码</p>
                 </div>
-                {error && <p className="text-xs text-destructive text-center">{error}</p>}
+                {error && <p className="text-xs text-destructive text-center mb-3">{error}</p>}
                 <Button type="submit" className="w-full h-11 rounded-xl font-semibold bg-primary hover:bg-primary/90">
                   登录
                 </Button>
@@ -101,26 +101,26 @@ export default function LoginPage() {
 
             {/* Register */}
             <TabsContent value="register" className="mt-0">
-              <form onSubmit={handleRegister} className="space-y-3.5">
-                <div className="space-y-1">
+              <form onSubmit={handleRegister}>
+                <div className="mb-2.5">
                   <Input value={regUsername}
                     onChange={(e) => setRegUsername(e.target.value)} required
                     className="h-10 rounded-xl bg-secondary/50 border-border/30 text-sm" />
-                  <p className="text-[11px] text-muted-foreground/60 pl-1">用户名</p>
+                  <p className="text-[11px] text-muted-foreground/60 mt-1 pl-1">用户名</p>
                 </div>
-                <div className="space-y-1">
+                <div className="mb-2.5">
                   <Input type="email" value={regEmail}
                     onChange={(e) => setRegEmail(e.target.value)} required
                     className="h-10 rounded-xl bg-secondary/50 border-border/30 text-sm" />
-                  <p className="text-[11px] text-muted-foreground/60 pl-1">邮箱地址</p>
+                  <p className="text-[11px] text-muted-foreground/60 mt-1 pl-1">邮箱地址</p>
                 </div>
-                <div className="space-y-1">
+                <div className="mb-4">
                   <Input type="password" value={regPassword}
                     onChange={(e) => setRegPassword(e.target.value)} required
                     className="h-10 rounded-xl bg-secondary/50 border-border/30 text-sm" />
-                  <p className="text-[11px] text-muted-foreground/60 pl-1">密码 (至少 8 位)</p>
+                  <p className="text-[11px] text-muted-foreground/60 mt-1 pl-1">密码 (至少 8 位)</p>
                 </div>
-                {error && <p className="text-xs text-destructive text-center">{error}</p>}
+                {error && <p className="text-xs text-destructive text-center mb-3">{error}</p>}
                 <Button type="submit" className="w-full h-11 rounded-xl font-semibold bg-primary hover:bg-primary/90">
                   注册
                 </Button>
