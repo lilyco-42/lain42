@@ -121,11 +121,14 @@ export default function PostDetailPage() {
         {post.images.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8">
             {post.images.map((img) => (
-              <div key={img.id} className="overflow-hidden rounded-2xl cursor-pointer group/img">
+              <div key={img.id} className="overflow-hidden rounded-2xl cursor-pointer group/img bg-muted">
                 <img
                   src={img.url_600}
                   alt=""
-                  className="w-full h-64 object-cover transition-transform duration-500 group-hover/img:scale-105"
+                  loading="lazy"
+                  className="w-full h-64 object-cover transition-all duration-700 group-hover/img:scale-105"
+                  style={{ filter: "blur(10px)" }}
+                  onLoad={(e) => { (e.target as HTMLImageElement).style.filter = "blur(0)"; }}
                   onClick={() => window.open(img.url_original, "_blank")}
                 />
               </div>

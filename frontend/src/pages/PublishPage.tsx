@@ -191,32 +191,28 @@ export default function PublishPage() {
                   </Button>
                 </div>
               ))}
-              {images.length < 5 && (
-                <label className={`
-                  border-2 border-dashed rounded-lg aspect-square flex flex-col items-center justify-center cursor-pointer
-                  transition-all duration-200
-                  ${uploading ? "border-primary bg-primary/5 pointer-events-none" : "hover:border-primary hover:bg-secondary/30"}
-                `}>
-                  {uploading ? (
-                    <>
-                      <svg className="h-6 w-6 animate-spin text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                      </svg>
-                      <span className="text-xs text-primary mt-1 font-medium">上传中...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Upload className="h-6 w-6 text-muted-foreground" />
-                      <span className="text-xs text-muted-foreground mt-1">上传图片</span>
-                    </>
-                  )}
+              {/* Uploading placeholder tile */}
+              {uploading && images.length < 5 && (
+                <div className="relative rounded-lg aspect-square bg-secondary/50 flex items-center justify-center overflow-hidden">
+                  <div className="flex flex-col items-center gap-2">
+                    <svg className="h-8 w-8 animate-spin text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                    <span className="text-xs text-muted-foreground">上传中...</span>
+                  </div>
+                </div>
+              )}
+              {/* Upload button */}
+              {!uploading && images.length < 5 && (
+                <label className="border-2 border-dashed rounded-lg aspect-square flex flex-col items-center justify-center cursor-pointer hover:border-primary hover:bg-secondary/30 transition-all duration-200">
+                  <Upload className="h-6 w-6 text-muted-foreground" />
+                  <span className="text-xs text-muted-foreground mt-1">上传图片</span>
                   <input
                     type="file"
                     accept="image/*"
                     className="hidden"
                     onChange={handleImageUpload}
-                    disabled={uploading}
                   />
                 </label>
               )}
