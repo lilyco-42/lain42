@@ -27,6 +27,7 @@ class User(Base):
     oauth_provider: Mapped[OAuthProvider | None] = mapped_column(SAEnum(OAuthProvider), nullable=True)
     oauth_id: Mapped[str | None] = mapped_column(String(128), nullable=True)
     registration_ip: Mapped[str | None] = mapped_column(String(45), nullable=True)
+    is_admin: Mapped[bool] = mapped_column(Boolean, default=False)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     posts = relationship("Post", back_populates="author")
