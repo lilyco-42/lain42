@@ -1,16 +1,15 @@
-import uuid
+import uuid, tempfile
+from pathlib import Path
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import update
 from app.database import get_db
-from app.models import Image
+from app.models import Image, Post
 from app.models.user import User
 from app.api.deps import get_current_user
-from app.services.upload import process_image
-from app.config import get_settings
+from app.services.oss_upload import process_and_upload, delete_from_oss
 import aiofiles
-from pathlib import Path
 
-settings = get_settings()
 router = APIRouter(prefix="/upload", tags=["upload"])
 
 
@@ -25,20 +24,18 @@ async def upload_image(
         raise HTTPException(400, f"Unsupported type: {file.content_type}")
 
     content = await file.read()
-    max_bytes = settings.max_image_size_mb * 1024 * 1024
-    if len(content) > max_bytes:
-        raise HTTPException(400, f"File exceeds {settings.max_image_size_mb}MB limit")
+    if len(content) > 10 * 1024 * 1024:
+        raise HTTPException(400, "File exceeds 10MB limit")
 
-    tmp_dir = Path(settings.upload_dir) / "tmp"
-    tmp_dir.mkdir(parents=True, exist_ok=True)
-    tmp_path = tmp_dir / f"{uuid.uuid4().hex}.tmp"
+    tmp_path = Path(tempfile.gettempdir()) / "lain42" / f"{uuid.uuid4().hex}.tmp"
+    tmp_path.parent.mkdir(parents=True, exist_ok=True)
     async with aiofiles.open(tmp_path, "wb") as f:
         await f.write(content)
 
     try:
-        urls = process_image(tmp_path, "tmp")
+        urls = process_and_upload(tmp_path, "tmp")
     except Exception as e:
-        raise HTTPException(400, f"Image processing failed: {e}")
+        raise HTTPException(400, f"Upload failed: {e}")
     finally:
         tmp_path.unlink(missing_ok=True)
 
@@ -69,22 +66,18 @@ async def delete_image(
     if not img:
         raise HTTPException(404, "Image not found")
 
-    # Delete files from disk
     for url in [img.url_original, img.url_600, img.url_300]:
-        path = Path(str(settings.upload_dir).replace("/data/lain42/images", "/data/lain42/images")) / url.lstrip("/images/")
-        try:
-            Path(path).unlink(missing_ok=True)
-        except Exception:
-            pass
+        if "lain42/images/" in url:
+            key = url.split("lain42/images/", 1)[-1]
+            full_key = f"lain42/images/tmp/{key.split('/')[-1]}"
+            delete_from_oss(full_key)
 
-    # If image was a post's cover, clear it
     if img.post_id:
-        from app.models import Post
-        from sqlalchemy import update
         await db.execute(
-            update(Post).where(Post.id == img.post_id, Post.cover_image.in_(
-                [img.url_600, img.url_300, img.url_original]
-            )).values(cover_image="")
+            update(Post).where(
+                Post.id == img.post_id,
+                Post.cover_image.in_([img.url_600, img.url_300, img.url_original])
+            ).values(cover_image="")
         )
 
     await db.delete(img)
