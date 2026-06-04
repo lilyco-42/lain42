@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import Layout from "@/components/Layout";
@@ -18,7 +18,8 @@ import { CATEGORIES } from "@/types";
 
 export default function PostDetailPage() {
   const { id } = useParams<{ id: string }>();
-  const { isAuthenticated } = useAuthStore();
+  const { user, isAuthenticated } = useAuthStore();
+  const navigate = useNavigate();
   const [copiedFile, setCopiedFile] = useState<string | null>(null);
   const [liked, setLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(0);
@@ -49,6 +50,8 @@ export default function PostDetailPage() {
 
   if (isLoading) return <Layout><div className="flex justify-center py-20">加载中...</div></Layout>;
   if (!post) return <Layout><div className="text-center py-20">帖子不存在</div></Layout>;
+
+  const isOwner = user?.id === post.author.id;
 
   return (
     <Layout>
@@ -89,6 +92,27 @@ export default function PostDetailPage() {
               <Bookmark className="h-4 w-4 mr-1.5" />
               收藏
             </Button>
+            {isOwner && (
+              <div className="flex gap-2 ml-auto">
+                <Button
+                  variant="secondary" size="sm"
+                  className="rounded-full font-medium"
+                  onClick={() => navigate(`/edit/${post.id}`)}>
+                  编辑
+                </Button>
+                <Button
+                  variant="secondary" size="sm"
+                  className="rounded-full font-medium text-destructive hover:bg-destructive/10"
+                  onClick={async () => {
+                    if (confirm("确定删除这个帖子吗？")) {
+                      await api.delete(`/posts/${post.id}`);
+                      navigate("/");
+                    }
+                  }}>
+                  删除
+                </Button>
+              </div>
+            )}
           </div>
         </div>
 
