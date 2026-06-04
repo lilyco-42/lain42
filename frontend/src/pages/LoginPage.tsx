@@ -1,7 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuthStore } from "@/stores/auth";
-import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Layout from "@/components/Layout";
 
@@ -16,9 +15,6 @@ const PROVIDERS = [
     clientId: import.meta.env.VITE_GITCODE_CLIENT_ID || "",
     authorizeUrl: "https://gitcode.com/oauth/authorize" },
 ];
-
-const inputCls = "w-full h-11 rounded-xl bg-secondary/50 border border-border/30 px-4 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-primary/30";
-const labelCls = "text-xs text-muted-foreground mb-1.5";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -55,67 +51,70 @@ export default function LoginPage() {
 
   return (
     <Layout>
-      <div className="flex items-center justify-center min-h-[80vh] px-4">
-        <div className="w-full max-w-sm">
-
-          {/* Logo */}
-          <h1 className="text-center text-2xl font-extrabold mb-8">
-            <span className="text-primary">Lain</span><span className="text-foreground">42</span>
+      <div className="flex items-center justify-center min-h-[85vh] px-4">
+        <div className="w-full max-w-[380px] bg-card border border-border rounded-xl p-8 md:p-10">
+          <h1 className="text-lg font-bold mb-1">
+            <span className="text-primary">Lain</span>42 · 登录
           </h1>
+          <p className="text-xs text-muted-foreground mb-6">登录或注册，开始分享你的配置</p>
 
           <Tabs defaultValue="password">
-            <TabsList className="grid w-full grid-cols-3 mb-8 rounded-xl p-1 h-10 bg-secondary/80">
-              <TabsTrigger value="password" className="rounded-lg text-xs data-[state=active]:bg-background data-[state=active]:shadow-sm">登录</TabsTrigger>
-              <TabsTrigger value="register" className="rounded-lg text-xs data-[state=active]:bg-background data-[state=active]:shadow-sm">注册</TabsTrigger>
-              <TabsTrigger value="oauth" className="rounded-lg text-xs data-[state=active]:bg-background data-[state=active]:shadow-sm">第三方</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-3 mb-6 rounded-lg p-1 h-9 bg-secondary">
+              <TabsTrigger value="password" className="rounded-md text-xs data-[state=active]:bg-background">登录</TabsTrigger>
+              <TabsTrigger value="register" className="rounded-md text-xs data-[state=active]:bg-background">注册</TabsTrigger>
+              <TabsTrigger value="oauth" className="rounded-md text-xs data-[state=active]:bg-background">第三方</TabsTrigger>
             </TabsList>
 
-            {/* ── Login ── */}
             <TabsContent value="password">
-              <form onSubmit={doLogin} className="flex flex-col gap-4">
-                <div>
-                  <p className={labelCls}>邮箱地址</p>
-                  <input type="email" value={loginEmail} onChange={e => setLoginEmail(e.target.value)} required className={inputCls} />
-                </div>
-                <div>
-                  <p className={labelCls}>密码</p>
-                  <input type="password" value={loginPassword} onChange={e => setLoginPassword(e.target.value)} required className={inputCls} />
-                </div>
-                {error && <p className="text-xs text-destructive">{error}</p>}
-                <Button type="submit" className="w-full h-11 rounded-xl font-semibold bg-primary hover:bg-primary/90 mt-1">登录</Button>
+              <form onSubmit={doLogin}>
+                <label className="block text-xs text-muted-foreground mb-1.5">邮箱地址</label>
+                <input type="email" value={loginEmail} onChange={e => setLoginEmail(e.target.value)} required
+                  className="w-full px-3.5 py-2.5 rounded-lg bg-secondary border border-border text-sm text-foreground outline-none focus:border-primary mb-4" />
+                <label className="block text-xs text-muted-foreground mb-1.5">密码</label>
+                <input type="password" value={loginPassword} onChange={e => setLoginPassword(e.target.value)} required
+                  className="w-full px-3.5 py-2.5 rounded-lg bg-secondary border border-border text-sm text-foreground outline-none focus:border-primary mb-5" />
+                {error && <p className="text-xs text-destructive mb-4">{error}</p>}
+                <button type="submit"
+                  className="w-full py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity">
+                  登录
+                </button>
               </form>
             </TabsContent>
 
-            {/* ── Register ── */}
             <TabsContent value="register">
-              <form onSubmit={doRegister} className="flex flex-col gap-3">
-                <div>
-                  <p className={labelCls}>用户名</p>
-                  <input value={regUsername} onChange={e => setRegUsername(e.target.value)} required className={inputCls} />
-                </div>
-                <div>
-                  <p className={labelCls}>邮箱地址</p>
-                  <input type="email" value={regEmail} onChange={e => setRegEmail(e.target.value)} required className={inputCls} />
-                </div>
-                <div>
-                  <p className={labelCls}>密码 (至少 8 位)</p>
-                  <input type="password" value={regPassword} onChange={e => setRegPassword(e.target.value)} required className={inputCls} />
-                </div>
-                {error && <p className="text-xs text-destructive">{error}</p>}
-                <Button type="submit" className="w-full h-11 rounded-xl font-semibold bg-primary hover:bg-primary/90 mt-1">注册</Button>
+              <form onSubmit={doRegister}>
+                <label className="block text-xs text-muted-foreground mb-1.5">用户名</label>
+                <input value={regUsername} onChange={e => setRegUsername(e.target.value)} required
+                  className="w-full px-3.5 py-2.5 rounded-lg bg-secondary border border-border text-sm text-foreground outline-none focus:border-primary mb-4" />
+                <label className="block text-xs text-muted-foreground mb-1.5">邮箱地址</label>
+                <input type="email" value={regEmail} onChange={e => setRegEmail(e.target.value)} required
+                  className="w-full px-3.5 py-2.5 rounded-lg bg-secondary border border-border text-sm text-foreground outline-none focus:border-primary mb-4" />
+                <label className="block text-xs text-muted-foreground mb-1.5">密码 <span className="opacity-50">(至少 8 位)</span></label>
+                <input type="password" value={regPassword} onChange={e => setRegPassword(e.target.value)} required
+                  className="w-full px-3.5 py-2.5 rounded-lg bg-secondary border border-border text-sm text-foreground outline-none focus:border-primary mb-5" />
+                {error && <p className="text-xs text-destructive mb-4">{error}</p>}
+                <button type="submit"
+                  className="w-full py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity">
+                  注册
+                </button>
               </form>
             </TabsContent>
 
-            {/* ── OAuth ── */}
-            <TabsContent value="oauth" className="flex flex-col gap-2.5">
+            <TabsContent value="oauth">
               {PROVIDERS.map(p => p.clientId ? (
-                <Button key={p.provider} variant="outline"
-                  className="w-full h-11 rounded-xl font-medium text-sm border-border/30 hover:bg-secondary/50 justify-center"
-                  onClick={() => oauth(p)}>{p.name}</Button>
+                <button key={p.provider} onClick={() => oauth(p)}
+                  className="w-full py-2.5 rounded-lg border border-border text-sm font-medium hover:bg-secondary transition-colors mb-2.5">
+                  {p.name}
+                </button>
               ) : (
-                <Button key={p.provider} variant="outline" disabled
-                  className="w-full h-11 rounded-xl text-sm border-border/30 justify-center opacity-40">{p.name} (未配置)</Button>
+                <button key={p.provider} disabled
+                  className="w-full py-2.5 rounded-lg border border-border text-sm font-medium opacity-40 mb-2.5">
+                  {p.name} (未配置)
+                </button>
               ))}
+              <p className="text-[11px] text-muted-foreground text-center mt-3">
+                需在服务端配置 OAuth 凭证后启用
+              </p>
             </TabsContent>
           </Tabs>
         </div>
