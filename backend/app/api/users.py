@@ -16,7 +16,7 @@ async def get_user(username: str, db: AsyncSession = Depends(get_db)):
     user = result.scalar_one_or_none()
     if not user:
         raise HTTPException(404, "User not found")
-    return user
+    return UserResponse.from_orm_user(user)
 
 
 @router.get("/{username}/posts", response_model=list[PostListResponse])
