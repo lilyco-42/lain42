@@ -67,6 +67,18 @@ async def list_providers():
             client_id=s.gitcode_client_id,
             authorize_url="https://gitcode.com/oauth/authorize",
         ),
+        OAuthProviderInfo(
+            provider="qq",
+            name="QQ",
+            client_id=s.qq_client_id,
+            authorize_url="https://graph.qq.com/oauth2.0/authorize",
+        ),
+        OAuthProviderInfo(
+            provider="wechat",
+            name="微信",
+            client_id=s.wechat_client_id,
+            authorize_url="https://open.weixin.qq.com/connect/qrconnect",
+        ),
     ]
 
 

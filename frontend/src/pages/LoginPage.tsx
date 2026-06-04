@@ -10,13 +10,24 @@ import Layout from "@/components/Layout";
 const PROVIDERS = [
   { provider: "github", name: "GitHub",
     clientId: import.meta.env.VITE_GITHUB_CLIENT_ID || "",
-    authorizeUrl: "https://github.com/login/oauth/authorize" },
+    authorizeUrl: "https://github.com/login/oauth/authorize",
+    scope: "user" },
   { provider: "gitee", name: "Gitee",
     clientId: import.meta.env.VITE_GITEE_CLIENT_ID || "",
-    authorizeUrl: "https://gitee.com/oauth/authorize" },
+    authorizeUrl: "https://gitee.com/oauth/authorize",
+    scope: "user_info" },
   { provider: "gitcode", name: "GitCode",
     clientId: import.meta.env.VITE_GITCODE_CLIENT_ID || "",
-    authorizeUrl: "https://gitcode.com/oauth/authorize" },
+    authorizeUrl: "https://gitcode.com/oauth/authorize",
+    scope: "user_info" },
+  { provider: "qq", name: "QQ",
+    clientId: import.meta.env.VITE_QQ_CLIENT_ID || "",
+    authorizeUrl: "https://graph.qq.com/oauth2.0/authorize",
+    scope: "get_user_info" },
+  { provider: "wechat", name: "微信",
+    clientId: import.meta.env.VITE_WECHAT_CLIENT_ID || "",
+    authorizeUrl: "https://open.weixin.qq.com/connect/qrconnect",
+    scope: "snsapi_login" },
 ];
 
 export default function LoginPage() {
@@ -49,7 +60,7 @@ export default function LoginPage() {
 
   const oauth = (p: typeof PROVIDERS[0]) => {
     const ri = `${window.location.origin}/login/callback?provider=${p.provider}`;
-    window.location.href = `${p.authorizeUrl}?client_id=${p.clientId}&redirect_uri=${encodeURIComponent(ri)}&scope=user`;
+    window.location.href = `${p.authorizeUrl}?client_id=${p.clientId}&redirect_uri=${encodeURIComponent(ri)}&scope=${p.scope}&response_type=code`;
   };
 
   return (

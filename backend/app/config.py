@@ -23,6 +23,14 @@ class Settings(BaseSettings):
     gitcode_client_secret: str = ""
     gitcode_redirect_uri: str = "http://localhost:5173/login/callback?provider=gitcode"
 
+    qq_client_id: str = ""
+    qq_client_secret: str = ""
+    qq_redirect_uri: str = "http://localhost:5173/login/callback?provider=qq"
+
+    wechat_client_id: str = ""
+    wechat_client_secret: str = ""
+    wechat_redirect_uri: str = "http://localhost:5173/login/callback?provider=wechat"
+
     upload_dir: Path = Path("/data/images")
     max_image_size_mb: int = 2
 

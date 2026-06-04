@@ -11,6 +11,8 @@ class OAuthProvider(str, enum.Enum):
     github = "github"
     gitee = "gitee"
     gitcode = "gitcode"
+    qq = "qq"
+    wechat = "wechat"
 
 
 class User(Base):
