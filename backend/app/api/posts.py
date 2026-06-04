@@ -97,6 +97,14 @@ async def create_post(
         if first_image:
             cover_image = first_image.url_600
 
+    # Auto-generate cover if no images
+    if not cover_image:
+        from app.services.cover_gen import generate_and_upload
+        try:
+            cover_image = generate_and_upload(body.title, body.description, body.content)
+        except Exception:
+            pass
+
     post = Post(
         title=body.title,
         description=body.description,
