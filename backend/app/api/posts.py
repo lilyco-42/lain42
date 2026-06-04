@@ -153,6 +153,11 @@ async def update_post(
                 if img:
                     img.post_id = post.id
                     img.sort_order = idx
+            # Update cover_image to first image
+            if val:
+                first = await db.get(Image, val[0])
+                if first:
+                    post.cover_image = first.url_600
         elif key == "config_files" and val is not None:
             setattr(post, key, [cf if isinstance(cf, dict) else cf.model_dump() for cf in val])
         elif hasattr(post, key):
