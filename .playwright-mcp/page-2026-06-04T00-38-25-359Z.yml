@@ -1,0 +1,28 @@
+- generic [ref=e3]:
+  - navigation [ref=e4]:
+    - generic [ref=e6]:
+      - link "Lain42" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e8]: Lain42
+      - generic [ref=e10]:
+        - img
+        - textbox "搜索配置、标签、软件..." [ref=e11]
+      - generic [ref=e12]:
+        - button "登录" [ref=e13]
+        - button "注册" [ref=e14]
+  - main [ref=e15]:
+    - generic [ref=e17]:
+      - heading "Lain42 · 登录" [level=1] [ref=e18]
+      - paragraph [ref=e19]: 登录或注册，开始分享你的配置
+      - generic [ref=e20]:
+        - tablist [ref=e21]:
+          - tab "登录" [selected] [ref=e22]
+          - tab "注册" [ref=e23]
+          - tab "第三方" [ref=e24]
+        - tabpanel "登录" [ref=e25]:
+          - generic [ref=e26]:
+            - generic [ref=e27]: 邮箱地址
+            - textbox [ref=e28]
+            - generic [ref=e29]: 密码
+            - textbox [ref=e30]
+            - button "登录" [ref=e31]
