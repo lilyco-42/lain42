@@ -52,6 +52,7 @@ from app.api.collections import router as collections_router
 from app.api.search import router as search_router
 from app.api.users import router as users_router
 from app.api.admin import router as admin_router
+from app.api.mirrors import router as mirrors_router
 
 app.include_router(auth_router, prefix="/api")
 app.include_router(posts_router, prefix="/api")
@@ -61,6 +62,7 @@ app.include_router(collections_router, prefix="/api")
 app.include_router(search_router, prefix="/api")
 app.include_router(users_router, prefix="/api")
 app.include_router(admin_router, prefix="/api")
+app.include_router(mirrors_router, prefix="/api")
 
 
 @app.get("/api/health")
