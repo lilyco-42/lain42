@@ -37,8 +37,10 @@ def upload_static():
     with open(idx_path) as f:
         html = f.read()
 
-    html = html.replace("/assets/", f"{_cdn}/{PREFIX}/assets/")
-    html = html.replace("/favicon.svg", f"{_cdn}/{PREFIX}/favicon.svg")
+    # Update index.html to use CDN URLs (only for relative paths)
+    html = html.replace('src="/assets/', f'src="{_cdn}/{PREFIX}/assets/')
+    html = html.replace('href="/assets/', f'href="{_cdn}/{PREFIX}/assets/')
+    html = html.replace('href="/favicon.svg"', f'href="{_cdn}/{PREFIX}/favicon.svg"')
 
     _bucket.put_object(f"{PREFIX}/index.html", html.encode(), headers={
         "Content-Type": "text/html",
