@@ -5,10 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Layout from "@/components/Layout";
-import { Github } from "lucide-react";
 
-const PROVIDERS = [
-  { provider: "github", name: "GitHub", icon: Github,
+const PROVIDERS: Array<{ provider: string; name: string; clientId: string; authorizeUrl: string }> = [
+  { provider: "github", name: "GitHub",
     clientId: import.meta.env.VITE_GITHUB_CLIENT_ID || "",
     authorizeUrl: "https://github.com/login/oauth/authorize" },
   { provider: "gitee", name: "Gitee",
@@ -78,7 +77,7 @@ export default function LoginPage() {
               <TabsTrigger value="oauth" className="rounded-lg text-xs data-[state=active]:bg-background data-[state=active]:shadow-sm">第三方</TabsTrigger>
             </TabsList>
 
-            {/* ── Password Login ── */}
+            {/* Password Login */}
             <TabsContent value="password" className="mt-0">
               <form onSubmit={handleLogin} className="space-y-3.5">
                 <Input type="email" placeholder="邮箱地址" value={loginEmail}
@@ -94,7 +93,7 @@ export default function LoginPage() {
               </form>
             </TabsContent>
 
-            {/* ── Register ── */}
+            {/* Register */}
             <TabsContent value="register" className="mt-0">
               <form onSubmit={handleRegister} className="space-y-3">
                 <Input placeholder="用户名" value={regUsername}
@@ -113,18 +112,18 @@ export default function LoginPage() {
               </form>
             </TabsContent>
 
-            {/* ── OAuth ── */}
+            {/* OAuth */}
             <TabsContent value="oauth" className="mt-0 space-y-2.5">
               {PROVIDERS.map((p) =>
                 p.clientId ? (
                   <Button key={p.provider} variant="outline"
-                    className="w-full h-11 rounded-xl font-medium text-sm border-border/30 hover:bg-secondary/50 justify-center gap-2"
+                    className="w-full h-11 rounded-xl font-medium text-sm border-border/30 hover:bg-secondary/50 justify-center"
                     onClick={() => handleOAuth(p.provider, p.authorizeUrl, p.clientId)}>
                     {p.name}
                   </Button>
                 ) : (
                   <Button key={p.provider} variant="outline" disabled
-                    className="w-full h-11 rounded-xl text-sm border-border/30 justify-center gap-2 opacity-40">
+                    className="w-full h-11 rounded-xl text-sm border-border/30 justify-center opacity-40">
                     {p.name} (未配置)
                   </Button>
                 )
