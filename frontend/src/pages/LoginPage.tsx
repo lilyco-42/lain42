@@ -54,59 +54,54 @@ export default function LoginPage() {
 
   return (
     <Layout>
-      <div className="flex items-center justify-center min-h-[80vh]">
-        <div className="w-md bg-card rounded-2xl shadow-2xl p-8">
+      <div className="flex items-center justify-center min-h-[85vh]">
+        <div className="w-full max-w-[364px] mx-4">
 
-          <div className="text-center mb-6">
-            <h2 className="text-2xl font-bold">
-              <span className="text-primary">Lain</span>42
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold tracking-tight mb-1.5">
+              <span className="text-primary">Lain</span><span className="text-foreground">42</span>
             </h2>
-            <p className="text-sm text-muted-foreground mt-1">登录或注册，开始分享你的配置</p>
+            <p className="text-sm text-muted-foreground">登录或注册，开始分享你的配置</p>
           </div>
 
-          <Tabs defaultValue="password" className="w-full">
-            <TabsList className="mb-6">
+          <Tabs defaultValue="password" className="flex flex-col items-center">
+            <TabsList className="mb-8">
               <TabsTrigger value="password">登录</TabsTrigger>
               <TabsTrigger value="register">注册</TabsTrigger>
               <TabsTrigger value="oauth">第三方</TabsTrigger>
             </TabsList>
 
             <TabsContent value="password">
-              <form onSubmit={doLogin} className="flex flex-col gap-4">
+              <form onSubmit={doLogin} className="flex flex-col gap-3">
                 <Label htmlFor="email">邮箱地址</Label>
-                <Input id="email" type="email" placeholder="you@example.com" className="mt-1"
-                  value={loginEmail} onChange={e => setLoginEmail(e.target.value)} required />
-
+                <Input id="email" type="email" placeholder="you@example.com"
+                  className="mt-1" value={loginEmail} onChange={e => setLoginEmail(e.target.value)} required />
                 <Label htmlFor="password">密码</Label>
-                <Input id="password" type="password" placeholder="********" className="mt-1"
-                  value={loginPassword} onChange={e => setLoginPassword(e.target.value)} required />
-
+                <Input id="password" type="password" placeholder="········"
+                  className="mt-1" value={loginPassword} onChange={e => setLoginPassword(e.target.value)} required />
                 {error && <p className="text-sm text-destructive">{error}</p>}
-                <Button type="submit" className="mt-3 w-full">登录</Button>
+                <Button type="submit" className="mt-2 w-full">登录</Button>
               </form>
             </TabsContent>
 
             <TabsContent value="register">
-              <form onSubmit={doRegister} className="flex flex-col gap-4">
+              <form onSubmit={doRegister} className="flex flex-col gap-3">
                 <Label htmlFor="reg-username">用户名</Label>
-                <Input id="reg-username" placeholder="你的用户名" className="mt-1"
-                  value={regUsername} onChange={e => setRegUsername(e.target.value)} required />
-
+                <Input id="reg-username" placeholder="你的用户名"
+                  className="mt-1" value={regUsername} onChange={e => setRegUsername(e.target.value)} required />
                 <Label htmlFor="reg-email">邮箱地址</Label>
-                <Input id="reg-email" type="email" placeholder="you@example.com" className="mt-1"
-                  value={regEmail} onChange={e => setRegEmail(e.target.value)} required />
-
-                <Label htmlFor="reg-password">密码 <span className="text-muted-foreground font-normal">(至少 8 位)</span></Label>
-                <Input id="reg-password" type="password" placeholder="********" className="mt-1"
-                  value={regPassword} onChange={e => setRegPassword(e.target.value)} required />
-
+                <Input id="reg-email" type="email" placeholder="you@example.com"
+                  className="mt-1" value={regEmail} onChange={e => setRegEmail(e.target.value)} required />
+                <Label htmlFor="reg-password">密码<span className="text-muted-foreground font-normal ml-1">(至少 8 位)</span></Label>
+                <Input id="reg-password" type="password" placeholder="········"
+                  className="mt-1" value={regPassword} onChange={e => setRegPassword(e.target.value)} required />
                 {error && <p className="text-sm text-destructive">{error}</p>}
-                <Button type="submit" className="mt-3 w-full">注册</Button>
+                <Button type="submit" className="mt-2 w-full">注册</Button>
               </form>
             </TabsContent>
 
             <TabsContent value="oauth">
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-2.5">
                 {PROVIDERS.map(p => (
                   <Button key={p.provider} variant="outline" className="w-full"
                     disabled={!p.clientId}
@@ -114,7 +109,7 @@ export default function LoginPage() {
                     {p.name}{!p.clientId && " (未配置)"}
                   </Button>
                 ))}
-                <p className="text-xs text-muted-foreground text-center mt-1">
+                <p className="text-xs text-muted-foreground text-center mt-2">
                   需在服务端配置 OAuth 凭证后启用
                 </p>
               </div>
