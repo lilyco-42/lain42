@@ -81,14 +81,12 @@ export default function LoginPage() {
               <form onSubmit={handleLogin} className="flex flex-col gap-3">
                 <input type="email" value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} required
                   className="h-11 rounded-xl bg-secondary/50 border border-border/30 px-4 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-primary/30 placeholder:text-muted-foreground/50"
-                  placeholder="输入邮箱" />
-                <span className="text-[11px] text-muted-foreground/60 -mt-2 px-1">邮箱地址</span>
+                  placeholder="邮箱地址" />
                 <input type="password" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} required
                   className="h-11 rounded-xl bg-secondary/50 border border-border/30 px-4 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-primary/30 placeholder:text-muted-foreground/50"
-                  placeholder="输入密码" />
-                <span className="text-[11px] text-muted-foreground/60 -mt-2 px-1">密码</span>
+                  placeholder="密码" />
                 {error && <p className="text-xs text-destructive text-center">{error}</p>}
-                <Button type="submit" className="w-full h-11 rounded-xl font-semibold bg-primary hover:bg-primary/90 mt-2">
+                <Button type="submit" className="w-full h-11 rounded-xl font-semibold bg-primary hover:bg-primary/90">
                   登录
                 </Button>
               </form>
@@ -96,21 +94,18 @@ export default function LoginPage() {
 
             {/* Register */}
             <TabsContent value="register" className="mt-0">
-              <form onSubmit={handleRegister} className="flex flex-col gap-2">
+              <form onSubmit={handleRegister} className="flex flex-col gap-3">
                 <input value={regUsername} onChange={(e) => setRegUsername(e.target.value)} required
-                  className="h-10 rounded-xl bg-secondary/50 border border-border/30 px-4 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-primary/30 placeholder:text-muted-foreground/50"
-                  placeholder="输入用户名" />
-                <span className="text-[11px] text-muted-foreground/60 -mt-1 px-1">用户名</span>
+                  className="h-11 rounded-xl bg-secondary/50 border border-border/30 px-4 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-primary/30 placeholder:text-muted-foreground/50"
+                  placeholder="用户名" />
                 <input type="email" value={regEmail} onChange={(e) => setRegEmail(e.target.value)} required
-                  className="h-10 rounded-xl bg-secondary/50 border border-border/30 px-4 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-primary/30 placeholder:text-muted-foreground/50"
-                  placeholder="输入邮箱" />
-                <span className="text-[11px] text-muted-foreground/60 -mt-1 px-1">邮箱地址</span>
+                  className="h-11 rounded-xl bg-secondary/50 border border-border/30 px-4 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-primary/30 placeholder:text-muted-foreground/50"
+                  placeholder="邮箱地址" />
                 <input type="password" value={regPassword} onChange={(e) => setRegPassword(e.target.value)} required
-                  className="h-10 rounded-xl bg-secondary/50 border border-border/30 px-4 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-primary/30 placeholder:text-muted-foreground/50"
-                  placeholder="输入密码" />
-                <span className="text-[11px] text-muted-foreground/60 -mt-1 px-1">密码 (至少 8 位)</span>
+                  className="h-11 rounded-xl bg-secondary/50 border border-border/30 px-4 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-primary/30 placeholder:text-muted-foreground/50"
+                  placeholder="密码" />
                 {error && <p className="text-xs text-destructive text-center">{error}</p>}
-                <Button type="submit" className="w-full h-11 rounded-xl font-semibold bg-primary hover:bg-primary/90 mt-2">
+                <Button type="submit" className="w-full h-11 rounded-xl font-semibold bg-primary hover:bg-primary/90">
                   注册
                 </Button>
               </form>
