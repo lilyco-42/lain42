@@ -61,9 +61,16 @@ export default function PublishPage() {
     if (!files) return;
     setUploading(true);
     for (const file of Array.from(files)) {
-      const formData = new FormData();
-      formData.append("file", file);
-      const result = await api.post<ImageItem>("/upload/image", formData);
+      // 1. Get signed OSS upload URL
+      const sign = await api.get<{ url: string; key: string; cdn: string }>(
+        `/upload/sign?filename=${encodeURIComponent(file.name)}`
+      );
+      // 2. Upload directly to OSS (bypass server)
+      await fetch(sign.url, { method: "PUT", body: file, headers: { "Content-Type": file.type } });
+      // 3. Register with backend
+      const result = await api.post<ImageItem>(
+        `/upload/register?key=${encodeURIComponent(sign.key)}`
+      );
       setImages((prev) => [...prev, result]);
     }
     setUploading(false);

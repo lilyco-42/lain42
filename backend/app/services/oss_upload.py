@@ -25,6 +25,14 @@ def delete_from_oss(key: str):
         pass
 
 
+def sign_upload(filename: str) -> dict:
+    """Generate a signed URL for direct browser-to-OSS upload."""
+    base_name = uuid.uuid4().hex[:12]
+    key = f"{_prefix}tmp/{base_name}_{filename}"
+    url = _bucket.sign_url("PUT", key, 300)  # 5 min expiry
+    return {"url": url, "key": key, "cdn": f"{_cdn}/{key}"}
+
+
 def process_and_upload(file_path: Path, post_id: str) -> dict:
     base_name = uuid.uuid4().hex[:12]
     prefix = f"{_prefix}{post_id}"
