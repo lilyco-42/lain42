@@ -64,8 +64,8 @@ export default function LoginPage() {
             <p className="text-sm text-muted-foreground">登录或注册，开始分享你的配置</p>
           </div>
 
-          <Tabs defaultValue="password" className="flex flex-col items-center">
-            <TabsList className="mb-8">
+          <Tabs defaultValue="password" className="flex flex-col">
+            <TabsList className="mb-8 self-center">
               <TabsTrigger value="password">登录</TabsTrigger>
               <TabsTrigger value="register">注册</TabsTrigger>
               <TabsTrigger value="oauth">第三方</TabsTrigger>
