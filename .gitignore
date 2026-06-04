@@ -30,3 +30,6 @@ Thumbs.db
 
 # Images data
 /data/images/
+.playwright-mcp/
+*.png
+*.txt
