@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Layout from "@/components/Layout";
 
-const PROVIDERS: Array<{ provider: string; name: string; clientId: string; authorizeUrl: string }> = [
+const PROVIDERS = [
   { provider: "github", name: "GitHub",
     clientId: import.meta.env.VITE_GITHUB_CLIENT_ID || "",
     authorizeUrl: "https://github.com/login/oauth/authorize" },
@@ -79,13 +79,19 @@ export default function LoginPage() {
 
             {/* Password Login */}
             <TabsContent value="password" className="mt-0">
-              <form onSubmit={handleLogin} className="space-y-3.5">
-                <Input type="email" placeholder="邮箱地址" value={loginEmail}
-                  onChange={(e) => setLoginEmail(e.target.value)} required
-                  className="h-11 rounded-xl bg-secondary/50 border-border/30 text-sm placeholder:text-muted-foreground/60" />
-                <Input type="password" placeholder="密码" value={loginPassword}
-                  onChange={(e) => setLoginPassword(e.target.value)} required
-                  className="h-11 rounded-xl bg-secondary/50 border-border/30 text-sm placeholder:text-muted-foreground/60" />
+              <form onSubmit={handleLogin} className="space-y-4">
+                <div className="space-y-1">
+                  <Input type="email" value={loginEmail}
+                    onChange={(e) => setLoginEmail(e.target.value)} required
+                    className="h-11 rounded-xl bg-secondary/50 border-border/30 text-sm" />
+                  <p className="text-[11px] text-muted-foreground/60 pl-1">邮箱地址</p>
+                </div>
+                <div className="space-y-1">
+                  <Input type="password" value={loginPassword}
+                    onChange={(e) => setLoginPassword(e.target.value)} required
+                    className="h-11 rounded-xl bg-secondary/50 border-border/30 text-sm" />
+                  <p className="text-[11px] text-muted-foreground/60 pl-1">密码</p>
+                </div>
                 {error && <p className="text-xs text-destructive text-center">{error}</p>}
                 <Button type="submit" className="w-full h-11 rounded-xl font-semibold bg-primary hover:bg-primary/90">
                   登录
@@ -95,16 +101,25 @@ export default function LoginPage() {
 
             {/* Register */}
             <TabsContent value="register" className="mt-0">
-              <form onSubmit={handleRegister} className="space-y-3">
-                <Input placeholder="用户名" value={regUsername}
-                  onChange={(e) => setRegUsername(e.target.value)} required
-                  className="h-10 rounded-xl bg-secondary/50 border-border/30 text-sm placeholder:text-muted-foreground/60" />
-                <Input type="email" placeholder="邮箱地址" value={regEmail}
-                  onChange={(e) => setRegEmail(e.target.value)} required
-                  className="h-10 rounded-xl bg-secondary/50 border-border/30 text-sm placeholder:text-muted-foreground/60" />
-                <Input type="password" placeholder="密码 (至少 8 位)" value={regPassword}
-                  onChange={(e) => setRegPassword(e.target.value)} required
-                  className="h-10 rounded-xl bg-secondary/50 border-border/30 text-sm placeholder:text-muted-foreground/60" />
+              <form onSubmit={handleRegister} className="space-y-3.5">
+                <div className="space-y-1">
+                  <Input value={regUsername}
+                    onChange={(e) => setRegUsername(e.target.value)} required
+                    className="h-10 rounded-xl bg-secondary/50 border-border/30 text-sm" />
+                  <p className="text-[11px] text-muted-foreground/60 pl-1">用户名</p>
+                </div>
+                <div className="space-y-1">
+                  <Input type="email" value={regEmail}
+                    onChange={(e) => setRegEmail(e.target.value)} required
+                    className="h-10 rounded-xl bg-secondary/50 border-border/30 text-sm" />
+                  <p className="text-[11px] text-muted-foreground/60 pl-1">邮箱地址</p>
+                </div>
+                <div className="space-y-1">
+                  <Input type="password" value={regPassword}
+                    onChange={(e) => setRegPassword(e.target.value)} required
+                    className="h-10 rounded-xl bg-secondary/50 border-border/30 text-sm" />
+                  <p className="text-[11px] text-muted-foreground/60 pl-1">密码 (至少 8 位)</p>
+                </div>
                 {error && <p className="text-xs text-destructive text-center">{error}</p>}
                 <Button type="submit" className="w-full h-11 rounded-xl font-semibold bg-primary hover:bg-primary/90">
                   注册
