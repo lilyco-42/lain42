@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuthStore } from "@/stores/auth";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Layout from "@/components/Layout";
 
@@ -79,21 +78,17 @@ export default function LoginPage() {
 
             {/* Password Login */}
             <TabsContent value="password" className="mt-0">
-              <form onSubmit={handleLogin}>
-                <div className="mb-3">
-                  <Input type="email" value={loginEmail}
-                    onChange={(e) => setLoginEmail(e.target.value)} required
-                    className="h-11 rounded-xl bg-secondary/50 border-border/30 text-sm" />
-                  <p className="text-[11px] text-muted-foreground/60 mt-1 pl-1">邮箱地址</p>
-                </div>
-                <div className="mb-4">
-                  <Input type="password" value={loginPassword}
-                    onChange={(e) => setLoginPassword(e.target.value)} required
-                    className="h-11 rounded-xl bg-secondary/50 border-border/30 text-sm" />
-                  <p className="text-[11px] text-muted-foreground/60 mt-1 pl-1">密码</p>
-                </div>
-                {error && <p className="text-xs text-destructive text-center mb-3">{error}</p>}
-                <Button type="submit" className="w-full h-11 rounded-xl font-semibold bg-primary hover:bg-primary/90">
+              <form onSubmit={handleLogin} className="flex flex-col gap-3">
+                <input type="email" value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} required
+                  className="h-11 rounded-xl bg-secondary/50 border border-border/30 px-4 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-primary/30 placeholder:text-muted-foreground/50"
+                  placeholder="输入邮箱" />
+                <span className="text-[11px] text-muted-foreground/60 -mt-2 px-1">邮箱地址</span>
+                <input type="password" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} required
+                  className="h-11 rounded-xl bg-secondary/50 border border-border/30 px-4 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-primary/30 placeholder:text-muted-foreground/50"
+                  placeholder="输入密码" />
+                <span className="text-[11px] text-muted-foreground/60 -mt-2 px-1">密码</span>
+                {error && <p className="text-xs text-destructive text-center">{error}</p>}
+                <Button type="submit" className="w-full h-11 rounded-xl font-semibold bg-primary hover:bg-primary/90 mt-2">
                   登录
                 </Button>
               </form>
@@ -101,27 +96,21 @@ export default function LoginPage() {
 
             {/* Register */}
             <TabsContent value="register" className="mt-0">
-              <form onSubmit={handleRegister}>
-                <div className="mb-2.5">
-                  <Input value={regUsername}
-                    onChange={(e) => setRegUsername(e.target.value)} required
-                    className="h-10 rounded-xl bg-secondary/50 border-border/30 text-sm" />
-                  <p className="text-[11px] text-muted-foreground/60 mt-1 pl-1">用户名</p>
-                </div>
-                <div className="mb-2.5">
-                  <Input type="email" value={regEmail}
-                    onChange={(e) => setRegEmail(e.target.value)} required
-                    className="h-10 rounded-xl bg-secondary/50 border-border/30 text-sm" />
-                  <p className="text-[11px] text-muted-foreground/60 mt-1 pl-1">邮箱地址</p>
-                </div>
-                <div className="mb-4">
-                  <Input type="password" value={regPassword}
-                    onChange={(e) => setRegPassword(e.target.value)} required
-                    className="h-10 rounded-xl bg-secondary/50 border-border/30 text-sm" />
-                  <p className="text-[11px] text-muted-foreground/60 mt-1 pl-1">密码 (至少 8 位)</p>
-                </div>
-                {error && <p className="text-xs text-destructive text-center mb-3">{error}</p>}
-                <Button type="submit" className="w-full h-11 rounded-xl font-semibold bg-primary hover:bg-primary/90">
+              <form onSubmit={handleRegister} className="flex flex-col gap-2">
+                <input value={regUsername} onChange={(e) => setRegUsername(e.target.value)} required
+                  className="h-10 rounded-xl bg-secondary/50 border border-border/30 px-4 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-primary/30 placeholder:text-muted-foreground/50"
+                  placeholder="输入用户名" />
+                <span className="text-[11px] text-muted-foreground/60 -mt-1 px-1">用户名</span>
+                <input type="email" value={regEmail} onChange={(e) => setRegEmail(e.target.value)} required
+                  className="h-10 rounded-xl bg-secondary/50 border border-border/30 px-4 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-primary/30 placeholder:text-muted-foreground/50"
+                  placeholder="输入邮箱" />
+                <span className="text-[11px] text-muted-foreground/60 -mt-1 px-1">邮箱地址</span>
+                <input type="password" value={regPassword} onChange={(e) => setRegPassword(e.target.value)} required
+                  className="h-10 rounded-xl bg-secondary/50 border border-border/30 px-4 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-primary/30 placeholder:text-muted-foreground/50"
+                  placeholder="输入密码" />
+                <span className="text-[11px] text-muted-foreground/60 -mt-1 px-1">密码 (至少 8 位)</span>
+                {error && <p className="text-xs text-destructive text-center">{error}</p>}
+                <Button type="submit" className="w-full h-11 rounded-xl font-semibold bg-primary hover:bg-primary/90 mt-2">
                   注册
                 </Button>
               </form>
