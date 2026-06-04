@@ -32,7 +32,12 @@ class Settings(BaseSettings):
     wechat_redirect_uri: str = "http://localhost:5173/login/callback?provider=wechat"
 
     upload_dir: Path = Path("/data/images")
-    max_image_size_mb: int = 2
+    max_image_size_mb: int = 10
+
+    oss_region: str = "oss-cn-shanghai"
+    oss_access_key_id: str = ""
+    oss_access_key_secret: str = ""
+    oss_bucket: str = "lain42-downloads"
 
     cors_origins: list[str] = ["http://localhost:5173"]
 
