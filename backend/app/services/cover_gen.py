@@ -68,17 +68,26 @@ def generate_cover(title: str, description: str = "", content: str = "") -> byte
         for x in range(0, W, 4):
             draw.rectangle([x, y, x + 3, y], fill=(r, g, b))
 
-    # Try to use a nice font, fall back to default
-    try:
-        title_font = ImageFont.truetype("C:/Windows/Fonts/msyh.ttc", 48)
-        word_font = ImageFont.truetype("C:/Windows/Fonts/msyh.ttc", 28)
-    except Exception:
-        try:
-            title_font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 48)
-            word_font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 28)
-        except Exception:
-            title_font = ImageFont.load_default()
-            word_font = ImageFont.load_default()
+    # Try CJK fonts for Chinese support, fall back
+    FONT_PATHS = [
+        "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
+        "/usr/share/fonts/truetype/noto/NotoSansCJK-Regular.ttc",
+        "/usr/share/fonts/noto-cjk/NotoSansCJK-Regular.ttc",
+        "C:/Windows/Fonts/msyh.ttc",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+    ]
+    title_path = word_path = None
+    for fp in FONT_PATHS:
+        import os
+        if os.path.exists(fp):
+            title_path = word_path = fp
+            break
+    if title_path:
+        title_font = ImageFont.truetype(title_path, 52)
+        word_font = ImageFont.truetype(word_path, 32)
+    else:
+        title_font = ImageFont.load_default()
+        word_font = ImageFont.load_default()
 
     # Draw title
     title_text = title[:30]
