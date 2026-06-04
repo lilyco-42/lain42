@@ -88,7 +88,7 @@ export default function PublishPage() {
     mutationFn: (data: unknown) =>
       isEdit ? api.put(`/posts/${id}`, data) : api.post("/posts", data),
     onSuccess: (result: any) => {
-      navigate(`/post/${result.id}`);
+      window.location.href = `/post/${result.id}`;
     },
   });
 
