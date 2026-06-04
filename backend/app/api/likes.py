@@ -27,16 +27,14 @@ async def toggle_like(
 
     if existing:
         await db.delete(existing)
-        await db.execute(
-            update(Post).where(Post.id == post_id).values(likes_count=Post.likes_count - 1)
-        )
+        post.likes_count = max(0, post.likes_count - 1)
         await db.commit()
-        return {"liked": False, "likes_count": post.likes_count - 1}
+        await db.refresh(post)
+        return {"liked": False, "likes_count": post.likes_count}
     else:
         like = Like(user_id=current_user.id, post_id=post_id)
         db.add(like)
-        await db.execute(
-            update(Post).where(Post.id == post_id).values(likes_count=Post.likes_count + 1)
-        )
+        post.likes_count = post.likes_count + 1
         await db.commit()
-        return {"liked": True, "likes_count": post.likes_count + 1}
+        await db.refresh(post)
+        return {"liked": True, "likes_count": post.likes_count}
