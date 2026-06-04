@@ -57,3 +57,35 @@ async def upload_image(
         "url_600": image.url_600,
         "url_300": image.url_300,
     }
+
+
+@router.delete("/image/{image_id}", status_code=204)
+async def delete_image(
+    image_id: uuid.UUID,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    img = await db.get(Image, image_id)
+    if not img:
+        raise HTTPException(404, "Image not found")
+
+    # Delete files from disk
+    for url in [img.url_original, img.url_600, img.url_300]:
+        path = Path(str(settings.upload_dir).replace("/data/lain42/images", "/data/lain42/images")) / url.lstrip("/images/")
+        try:
+            Path(path).unlink(missing_ok=True)
+        except Exception:
+            pass
+
+    # If image was a post's cover, clear it
+    if img.post_id:
+        from app.models import Post
+        from sqlalchemy import update
+        await db.execute(
+            update(Post).where(Post.id == img.post_id, Post.cover_image.in_(
+                [img.url_600, img.url_300, img.url_original]
+            )).values(cover_image="")
+        )
+
+    await db.delete(img)
+    await db.commit()

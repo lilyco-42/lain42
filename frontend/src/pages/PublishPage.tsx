@@ -185,7 +185,10 @@ export default function PublishPage() {
                     variant="destructive"
                     size="icon"
                     className="absolute top-1 right-1 h-6 w-6 opacity-0 group-hover:opacity-100"
-                    onClick={() => setImages(images.filter((_, i) => i !== idx))}
+                    onClick={async () => {
+                      try { await api.delete(`/upload/image/${img.id}`); } catch {}
+                      setImages(images.filter((_, i) => i !== idx));
+                    }}
                   >
                     <X className="h-3 w-3" />
                   </Button>
